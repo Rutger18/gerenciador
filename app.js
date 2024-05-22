@@ -292,5 +292,3 @@ document.addEventListener('DOMContentLoaded', function() {
             window.markAsPaid = markAsPaid;
             window.removeExpense = removeExpense;
 });
-
-
