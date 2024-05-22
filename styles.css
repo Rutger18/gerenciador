@@ -1,4 +1,3 @@
-/* styles.css */
 /* Estilos gerais */
 body {
     font-family: Arial, sans-serif;
@@ -14,7 +13,7 @@ h1 {
 }
 
 form {
-    max-width: 600px;
+    max-width: 100%;
     margin: 20px auto;
     padding: 10px;
     background: #fff;
@@ -24,7 +23,7 @@ form {
 }
 
 input[type="text"], input[type="number"], select {
-    width: calc(600px - 1px);
+    width: 100%;
     padding: 10px;
     margin: 10px 0;
     border: 1px solid #ccc;
@@ -33,7 +32,7 @@ input[type="text"], input[type="number"], select {
 }
 
 button[id="criar"] {
-    width: 600px;
+    width: 100%;
     padding: 10px;
     background-color: #28a745;
     color: white;
@@ -44,7 +43,7 @@ button[id="criar"] {
 }
 
 button {
-    width: 80px;
+    width: 20%;
     padding: 10px;
     background-color: #28a745;
     color: white;
@@ -53,7 +52,6 @@ button {
     cursor: pointer;
     font-size: 16px;
     text-align: center;
-    align-items: right;
 }
 
 button:hover {
@@ -62,7 +60,7 @@ button:hover {
 
 /* Estilos para o gráfico e total de despesas */
 #chartContainer {
-    max-width: 600px;
+    max-width: 100%;
     margin: 20px auto;
     background: #fff;
     border: 1px solid #ddd;
@@ -72,7 +70,7 @@ button:hover {
 }
 
 #totalExpensesContainer {
-    max-width: 600px;
+    max-width: 100%;
     margin: 20px auto;
     background: #fff;
     border: 1px solid #ddd;
@@ -89,7 +87,7 @@ button:hover {
 
 /* Estilos para a lista de despesas */
 #expensesListContainer, #userExpensesContainer, #userPaidExpensesContainer {
-    max-width: 600px;
+    max-width: 100%;
     margin: 20px auto;
     background: #fff;
     border: 1px solid #ddd;
@@ -136,4 +134,23 @@ button:hover {
 
 .expense-user {
     color: #333;
+}
+
+/* Media query para telas pequenas */
+@media screen and (max-width: 768px) {
+    form, #chartContainer, #totalExpensesContainer, #expensesListContainer, #userExpensesContainer, #userPaidExpensesContainer {
+        padding: 10px;
+    }
+
+    button {
+        font-size: 14px;
+    }
+
+    #expensesList li, #userExpensesList li, #userPaidExpensesList li {
+        flex-direction: column;
+    }
+
+   .expense-category,.expense-amount,.expense-user {
+        font-size: 14px;
+    }
 }

@@ -26,14 +26,12 @@
             <!-- Opções de usuários serão preenchidas dinamicamente -->
         </select>
         <input type="number" id="amountInput" placeholder="Valor da Despesa" step="0.01" required>
+        <input type="date" id="dueDateInput" placeholder="Data de Vencimento" required> <!-- Data de vencimento adicionada -->
         <button id="criar" type="submit">Adicionar Despesa</button>
     </form>
 
-    <div id="totalExpensesContainer">
-        <h2>Total de Despesas a Pagar: R$ <span id="totalExpenses">0.00</span></h2>
-    </div>
     <div id="userExpensesContainer">
-        <h2>Total de Despesas por Usuário</h2>
+        <h2>Total de Despesas por Usuário (Á pagar)</h2>
         <ul id="userExpensesList">
             <!-- Lista de despesas por usuário será preenchida dinamicamente -->
         </ul>
@@ -45,13 +43,16 @@
         </ul>
     </div>
     <div id="expensesListContainer">
-        <h2>Lista de Despesas</h2>
+        <h2>Lista de Despesas á pagar</h2>
         <ul id="expensesList">
             <!-- Lista de despesas será preenchida dinamicamente -->
         </ul>
     </div>
     <div id="chartContainer">
         <canvas id="expenseChart"></canvas>
+    </div>
+    <div id="totalExpensesContainer">
+        <h2>Total de Despesas a Pagar: R$ <span id="totalExpenses">0.00</span></h2>
     </div>
 </body>
 </html>

@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const userExpensesList = document.getElementById('userExpensesList');
     const userPaidExpensesList = document.getElementById('userPaidExpensesList');
 
-    let categories = JSON.parse(localStorage.getItem('categories')) || ['Alimentação', 'Moradia', 'Saúde'];
+    let categories = JSON.parse(localStorage.getItem('categories')) || ['Alimentação', 'Aluguel', 'Saúde'];
     let users = JSON.parse(localStorage.getItem('users')) || [];
     let expenses = JSON.parse(localStorage.getItem('expenses')) || [];
     let paidExpenses = JSON.parse(localStorage.getItem('paidExpenses')) || [];
@@ -45,7 +45,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const selectedCategory = document.getElementById('categoryIdSelect').value;
         const userName = document.getElementById('userNameSelect').value;
         const amount = parseFloat(document.getElementById('amountInput').value);
-        expenses.push({ category: selectedCategory, user: userName, amount: amount, paid: false });
+        const dueDate = document.getElementById('dueDateInput').value; // Captura a data de vencimento
+        expenses.push({ category: selectedCategory, user: userName, amount: amount, dueDate: dueDate, paid: false }); // Inclui a data de vencimento
         saveData();
         updateTotalExpenses();
         renderExpenseChart(); // Atualiza o gráfico com os novos dados
@@ -88,20 +89,20 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const categorySums = categories.map(category => {
             return expenses
-               .filter(expense => expense.category === category)
-               .reduce((sum, expense) => sum + expense.amount, 0);
+             .filter(expense => expense.category === category)
+             .reduce((sum, expense) => sum + expense.amount, 0);
         });
 
         const paidCategorySums = categories.map(category => {
             return paidExpenses
-               .filter(expense => expense.category === category)
-               .reduce((sum, expense) => sum + expense.amount, 0);
+             .filter(expense => expense.category === category)
+             .reduce((sum, expense) => sum + expense.amount, 0);
         });
 
         const unpaidCategorySums = categories.map(category => {
             return expenses
-               .filter(expense => expense.category === category)
-               .reduce((sum, expense) => sum + expense.amount, 0);
+             .filter(expense => expense.category === category)
+             .reduce((sum, expense) => sum + expense.amount, 0);
         });
 
         const allCategorySums = categories.map(category => {
@@ -162,8 +163,9 @@ document.addEventListener('DOMContentLoaded', function() {
             listItem.innerHTML = `<span class="expense-category">${expense.category}</span>
                                   <span class="expense-amount">R$${expense.amount.toFixed(2)}</span>
                                   <span class="expense-user">(${expense.user})</span>
+                                  <span class="expense-due-date">Vence em: ${expense.dueDate}</span>
                                   <button onclick="markAsPaid(${index})">Pagar</button>
-                                  <button onclick="removeExpense(${index})">Remover</button>`; // Botão Remover adicionado
+                                  <button onclick="removeExpense(${index})">Remover</button>`;
             expensesList.appendChild(listItem);
         });
     }
@@ -173,11 +175,17 @@ document.addEventListener('DOMContentLoaded', function() {
         userExpensesList.innerHTML = '';
         users.forEach(user => {
             const userTotal = expenses
-               .filter(expense => expense.user === user.name)
-               .reduce((sum, expense) => sum + expense.amount, 0);
+             .filter(expense => expense.user === user.name)
+             .reduce((sum, expense) => sum + expense.amount, 0);
             const listItem = document.createElement('li');
             listItem.innerHTML = `<span class="expense-user">${user.name}</span>
                                   <span class="expense-amount">R$${userTotal.toFixed(2)}</span>`;
+            
+            // Corrigido para evitar erro ao acessar 'dueDate'
+            const dueDate = expenses.find(exp => exp.user === user.name)?.dueDate?? 'N/A';
+            
+            listItem.innerHTML += `<span class="expense-due-date">Vence em: ${dueDate}</span>`;
+            
             userExpensesList.appendChild(listItem);
         });
     }
@@ -193,52 +201,96 @@ document.addEventListener('DOMContentLoaded', function() {
                                   <ul class="expense-items">
                                   ${userPaidExpenses.map(expense => `<li>${expense.category}: R$${expense.amount.toFixed(2)} - Pago</li>`).join('')}
                                   </ul>
-                                  <span class="expense-total">Total: R$${userPaidTotal.toFixed(2)}</span>`;
+                                  <span class="expense-total">Total: R$${userPaidTotal.toFixed(2)}</span>
+                                  <span class="expense-due-date">Vence em: ${userPaidExpenses[0]?.dueDate?? 'N/A'}</span>`;
             userPaidExpensesList.appendChild(listItem);
         });
     }
 
-    // Atualiza o select de categorias quando uma nova categoria é adicionada
+    // Função para atualizar o select de categorias
     function updateCategorySelect() {
-        const select = document.getElementById('categoryIdSelect');
-        select.innerHTML = '';
+        const categoryIdSelect = document.getElementById('categoryIdSelect');
+        categoryIdSelect.innerHTML = '';
         categories.forEach(category => {
             const option = document.createElement('option');
             option.value = category;
-            option.textContent = category;
-            select.appendChild(option);
+            option.text = category;
+            categoryIdSelect.add(option);
         });
     }
 
-    // Atualiza o select de nomes de usuários quando um novo usuário é adicionado
+    // Função para atualizar o select de nomes de usuários
     function updateUserNameSelect() {
-        const select = document.getElementById('userNameSelect');
-        select.innerHTML = '';
+        const userNameSelect = document.getElementById('userNameSelect');
+        userNameSelect.innerHTML = '';
         users.forEach(user => {
             const option = document.createElement('option');
             option.value = user.name;
-            option.textContent = user.name;
-            select.appendChild(option);
+            option.text = user.name;
+            userNameSelect.add(option);
         });
     }
 
-    // Inicializa o select de categorias
-    updateCategorySelect();
-    // Inicializa o select de nomes de usuários
-    updateUserNameSelect();
-    // Chama a função para renderizar o gráfico com os dados iniciais
+    // Carregar dados existentes quando a página é carregada
+    function loadData() {
+        loadCategories();
+        loadUsers();
+        loadExpenses();
+        loadPaidExpenses();
+    }
+
+    // Carregar categorias existentes
+    function loadCategories() {
+        const categoryIdSelect = document.getElementById('categoryIdSelect');
+        categories.forEach(category => {
+            const option = document.createElement('option');
+            option.value = category;
+            option.text = category;
+            categoryIdSelect.add(option);
+        });
+    }
+
+    // Carregar usuários existentes
+    function loadUsers() {
+        const userNameSelect = document.getElementById('userNameSelect');
+        users.forEach(user => {
+            const option = document.createElement('option');
+            option.value = user.name;
+            option.text = user.name;
+            userNameSelect.add(option);
+        });
+    }
+
+    // Carregar despesas existentes
+    function loadExpenses() {
+        expenses.forEach(expense => {
+            const amountInput = document.getElementById('amountInput');
+            amountInput.value = expense.amount;
+            const dueDateInput = document.getElementById('dueDateInput');
+            dueDateInput.value = expense.dueDate;
+        });
+    }
+
+    // Carregar despesas pagas existentes
+    function loadPaidExpenses() {
+        paidExpenses.forEach(expense => {
+            const amountInput = document.getElementById('amountInput');
+            amountInput.value = expense.amount;
+            const dueDateInput = document.getElementById('dueDateInput');
+            dueDateInput.value = expense.dueDate;
+        });
+    }
+
+    // Carregar dados existentes quando a página é carregada
+    loadData();
+
+    // Função para inicializar o gráfico de despesas
     renderExpenseChart();
-    // Atualiza o total de despesas inicialmente
-    updateTotalExpenses();
-    // Atualiza a lista de despesas inicialmente
-    renderExpensesList();
-    // Atualiza a lista de despesas por usuário inicialmente
-    renderUserExpenses();
-    // Atualiza a lista de despesas pagas por usuário inicialmente
-    renderUserPaidExpenses();
 
-    // Expondo a função markAsPaid para o escopo global
-    window.markAsPaid = markAsPaid;
-    window.removeExpense = removeExpense;
-
+            // Expondo a função markAsPaid para o escopo global
+            window.loadData = loadData
+            window.markAsPaid = markAsPaid;
+            window.removeExpense = removeExpense;
 });
+
+
