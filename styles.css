@@ -1,0 +1,139 @@
+/* styles.css */
+/* Estilos gerais */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    text-align: center;
+    margin-top: 20px;
+    color: #333;
+}
+
+form {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 10px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+input[type="text"], input[type="number"], select {
+    width: calc(600px - 1px);
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    box-sizing: border-box;
+}
+
+button[id="criar"] {
+    width: 600px;
+    padding: 10px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button {
+    width: 80px;
+    padding: 10px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    text-align: center;
+    align-items: right;
+}
+
+button:hover {
+    background-color: #218838;
+}
+
+/* Estilos para o gráfico e total de despesas */
+#chartContainer {
+    max-width: 600px;
+    margin: 20px auto;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+#totalExpensesContainer {
+    max-width: 600px;
+    margin: 20px auto;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+#totalExpensesContainer h2 {
+    margin: 0;
+    color: #333;
+}
+
+/* Estilos para a lista de despesas */
+#expensesListContainer, #userExpensesContainer, #userPaidExpensesContainer {
+    max-width: 600px;
+    margin: 20px auto;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+#expensesListContainer h2, #userExpensesContainer h2, #userPaidExpensesContainer h2 {
+    margin-top: 0;
+    color: #333;
+}
+
+#expensesList, #userExpensesList, #userPaidExpensesList {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+#expensesList li, #userExpensesList li, #userPaidExpensesList li {
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 3px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#expensesList li:nth-child(even), #userExpensesList li:nth-child(even), #userPaidExpensesList li:nth-child(even) {
+    background: #e9e9e9;
+}
+
+.expense-category {
+    font-weight: bold;
+    color: #555;
+}
+
+.expense-amount {
+    color: #28a745;
+    font-weight: bold;
+}
+
+.expense-user {
+    color: #333;
+}

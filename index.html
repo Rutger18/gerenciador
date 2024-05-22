@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciador de Despesas</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <script src="app.js"></script>
+    <h1>Gerenciador de Despesas</h1>
+    <form id="categoryForm">
+        <input type="text" id="newCategoryName" placeholder="Nome da Categoria" required>
+        <button id="criar" type="submit">Adicionar Categoria</button>
+    </form>
+    <form id="userForm">
+        <input type="text" id="newUserName" placeholder="Nome do Usuário" required>
+        <button id="criar" type="submit">Adicionar Usuário</button>
+    </form>
+    <form id="expenseForm">
+        <select id="categoryIdSelect" required>
+            <!-- Opções de categorias serão preenchidas dinamicamente -->
+        </select>
+        <select id="userNameSelect" required>
+            <!-- Opções de usuários serão preenchidas dinamicamente -->
+        </select>
+        <input type="number" id="amountInput" placeholder="Valor da Despesa" step="0.01" required>
+        <button id="criar" type="submit">Adicionar Despesa</button>
+    </form>
+
+    <div id="totalExpensesContainer">
+        <h2>Total de Despesas a Pagar: R$ <span id="totalExpenses">0.00</span></h2>
+    </div>
+    <div id="userExpensesContainer">
+        <h2>Total de Despesas por Usuário</h2>
+        <ul id="userExpensesList">
+            <!-- Lista de despesas por usuário será preenchida dinamicamente -->
+        </ul>
+    </div>
+    <div id="userPaidExpensesContainer">
+        <h2>Total de Despesas Pagas por Usuário</h2>
+        <ul id="userPaidExpensesList">
+            <!-- Lista de despesas pagas por usuário será preenchida dinamicamente -->
+        </ul>
+    </div>
+    <div id="expensesListContainer">
+        <h2>Lista de Despesas</h2>
+        <ul id="expensesList">
+            <!-- Lista de despesas será preenchida dinamicamente -->
+        </ul>
+    </div>
+    <div id="chartContainer">
+        <canvas id="expenseChart"></canvas>
+    </div>
+</body>
+</html>
